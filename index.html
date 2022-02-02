@@ -1,0 +1,383 @@
+<html lang="en">
+<head>
+	<title>Risk Assessment Score For Detecting Undiagnosed T2D</title>
+	<link rel="shortcut icon" href="../images/logo-um-fhs.png" type="image/x-icon">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Angular Material style sheet -->
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+	<link rel="stylesheet" src="../css/table.css">
+</head>
+
+<body ng-app="App">
+	<div ng-controller="ctrl" ng-cloak>
+		<md-content class="md-padding">
+			<div layout="row" style="padding-left:3%; padding-right:3%; padding-bottom:1%;">
+				<p style="display: block;
+					font-size: 1.8em;
+					margin-top: 0.67em;
+					margin-bottom: 0.67em;
+					margin-left: 0;
+					margin-right: 0;
+					font-weight: bold;">Risk Assessment Score For Detecting Undiagnosed Type 2 diabetes</p>
+				<image ng-src="../images/logo-um-fhs.png" style="padding-left:15%"></image>
+			</div>
+			<md-tabs class="md-accent" md-selected="data.selectedIndex"" md-dynamic-height >
+		  <md-tab id=" tab1">
+				<md-tab-label>Current state</md-tab-label>
+				<md-tab-body>
+
+					<div id="proMedica">
+						<br>
+						<table>
+							<tr>
+								<th>Question</th>
+								<th>Answer</th>
+							</tr>
+							<tr>
+								<td>Gender</td>
+								<td>{{var_female_text}}</td>
+							</tr>
+							<tr>
+								<td>Age (in years)</td>
+								<td>{{var_age_text}}</td>
+							</tr>
+							<tr>
+								<td>Waist circumferenc (in cm)</td>
+								<td>{{var_waist_text}}</td>
+							</tr>
+							<tr>
+								<td>Physical activity (at least 30 mins/day):</td>
+								<td>{{var_physInact_text}}</td>
+							</tr>
+							<tr>
+								<td>Have you ever been found to have high blood sugar?</td>
+								<td>{{var_bSugarHist_text}}</td>
+							</tr>
+							<tr>
+								<td>Are you taking medicines for high blood pressure?</td>
+								<td>{{var_hyperDrugs_text}}</td>
+							</tr>
+							<tr>
+								<td>Have any of your blood relatives ever been diagnosed with diabetes? </td>
+								<td>{{var_diabFam_text}}</td>
+							</tr>
+						</table>
+						</br>
+					</div>
+
+					<div id="not_proMedica">
+						<div layout="row" style="padding-left:15%; padding-right:15%;">
+							<div style="padding-left:5%; padding-right:5%;">
+								<h3>Gender:</h3>
+								<md-radio-group ng-model="check_spol" style="padding-left: 30px"
+									ng-click="submit_female(check_spol)">
+									<md-radio-button name="status" value="m">Male</md-radio-button>
+									<md-radio-button name="status" value="f">Female</md-radio-button>
+								</md-radio-group>
+
+								<h3>Age (in years):</h3>
+								<md-slider-container style="width:400px;">
+									<md-slider min="20" max="100" ng-model="check_age" aria-label="red" id="age_id"
+										md-discrete ng-click="submit_age(check_age)"></md-slider>
+									<md-input-container>
+										<input type="number" ng-model="check_age" aria-label="red"
+											aria-controls="age_id" ng-change="submit_age(check_age)" min="20" max="100">
+									</md-input-container>
+								</md-slider-container>
+
+								<h3>Waist circumference (in cm):</h3>
+								<md-slider-container style="width:400px;">
+									<md-slider min="40" max="205" ng-model="check_waist" aria-label="red1" id="waist_id"
+										md-discrete ng-click="submit_waist(check_waist)"></md-slider>
+									<md-input-container>
+										<input type="number" ng-model="check_waist" aria-label="red1"
+											aria-controls="waist_id" ng-change="submit_waist(check_waist)" min="40"
+											max="205">
+									</md-input-container>
+								</md-slider-container>
+
+								<h3>Physical activity (at least 30 mins/day):</h3>
+								<md-radio-group ng-model="check_telesnaAktivnost" style="padding-left: 30px"
+									ng-click="submit_physInact(check_telesnaAktivnost)">
+									<md-radio-button value="Yes">Yes</md-radio-button>
+									<md-radio-button value="No">No</md-radio-button>
+								</md-radio-group>
+							</div>
+							<div style="padding-left:5%; padding-right:5%;">
+								<h3>Have you ever been found to have high blood sugar?</h3>
+								<md-radio-group ng-model="check_povisanKrvniSladkor" style="padding-left: 30px"
+									ng-click="submit_bSugarHist(check_povisanKrvniSladkor)">
+									<md-radio-button value="Yes">Yes</md-radio-button>
+									<md-radio-button value="No">No</md-radio-button>
+								</md-radio-group>
+
+								<h3>Are you taking medicines for high blood pressure?</h3>
+								<md-radio-group ng-model="check_hypertensionDrugs" style="padding-left: 30px"
+									ng-click="submit_hyperDrugs(check_hypertensionDrugs)">
+									<md-radio-button value="Yes">Yes</md-radio-button>
+									<md-radio-button value="No">No</md-radio-button>
+								</md-radio-group>
+
+								<h3>Have any of your blood relatives ever been diagnosed with diabetes?</h3>
+								<md-checkbox value="Yes1" ng-model="check_yes1" ng-disabled="check_no"
+									ng-change="submit_diabFamClose(check_yes1)"> Yes (parents, brothers, sisters,
+									children)</md-checkbox><br>
+								<md-checkbox value="Yes2" ng-model="check_yes2" ng-disabled="check_no"
+									ng-change="submit_diabFamFar(check_yes2)">Yes (grandparents, aunts, uncles, cousins)
+								</md-checkbox><br>
+								<md-checkbox value="No" ng-model="check_no" ng-disabled="check_yes1 || check_yes2">No
+								</md-checkbox><br>
+
+							</div>
+						</div>
+					</div>
+					<md-divider></md-divider>
+					<div id="not_proMedica_naprej" style="padding-left:45%;">
+						<md-button class="md-raised md-primary"
+							ng-click="next(); submit_age(check_age); submit_female(check_spol);submit_waist(check_waist); submit_bSugarHist(check_povisanKrvniSladkor); submit_physInact(check_telesnaAktivnost); submit_hyperDrugs(check_hypertensionDrugs); submit_diabFamClose(check_yes1); submit_diabFamFar(check_yes2);"
+							ng-disabled="!((check_yes1 || check_yes2 || check_no) && check_hypertensionDrugs && check_povisanKrvniSladkor && check_telesnaAktivnost && check_waist && check_age && check_spol)">
+							Next</md-button>
+					</div>
+					<div id="proMedica_naprej" style="padding-left:45%;">
+						<md-button class="md-raised md-primary" ng-click="next(); manuallyCheck();">Next</md-button>
+					</div>
+				</md-tab-body>
+				</md-tab>
+				<md-tab id="tab2">
+					<!-- ng-disabled="data.secondLocked"-->
+					<md-tab-label>Hypothetical state</md-tab-label>
+					<md-tab-body>
+						<div layout="row" style="padding-left:3%; padding-right:3%;">
+							<div style="padding-right:5%;">
+								<h3>Waist circumference (in cm):</h3>
+								<md-slider-container style="width:400px;">
+									<md-slider min="40" max="205" ng-model="check_waist" aria-label="red1" id="waist_id"
+										md-discrete ng-click="submit_waist2(check_waist)"></md-slider>
+									<md-input-container>
+										<input type="number" ng-model="check_waist" aria-label="red1"
+											aria-controls="waist_id" ng-change="submit_waist2(check_waist)" min="40"
+											max="205">
+									</md-input-container>
+								</md-slider-container>
+
+								<div ng-show="bloodSugar_show">
+									<h3>Have you ever been found to have high blood sugar?</h3>
+									<md-radio-group ng-model="check_povisanKrvniSladkor" style="padding-left: 30px"
+										ng-click="submit_bSugarHist2(check_povisanKrvniSladkor)">
+										<md-radio-button value="Yes">Yes</md-radio-button>
+										<md-radio-button value="No">No</md-radio-button>
+									</md-radio-group>
+								</div>
+
+								<div ng-show="physInact_show">
+									<h3>Physical activity (at least 30 mins/day):</h3>
+									<md-radio-group ng-model="check_telesnaAktivnost" style="padding-left: 30px"
+										ng-click="submit_physInact2(check_telesnaAktivnost)">
+										<md-radio-button value="Yes">Yes</md-radio-button>
+										<md-radio-button value="No">No</md-radio-button>
+									</md-radio-group>
+								</div>
+
+								<div ng-show="hypertensionDrugs_show">
+									<h3>Are you taking medicines for high blood pressure?</h3>
+									<md-radio-group ng-model="check_hypertensionDrugs" style="padding-left: 30px"
+										ng-click="submit_hyperDrugs2(check_hypertensionDrugs)">
+										<md-radio-button value="Yes">Yes</md-radio-button>
+										<md-radio-button value="No">No</md-radio-button>
+									</md-radio-group>
+								</div>
+							</div>
+							<div>
+								<div ng-cloak="" layout="row" layout-align="center" layout-padding
+									style="padding-left:3%; padding-right:3%; padding-top:1%; padding-bottom:1%">
+									<div md-whiteframe="5" id="chartBkgnd">
+										<md-content>
+											<canvas id="line" class="chart chart-line" chart-data="data_1"
+												chart-labels="labels" chart-series="series" chart-options="options"
+												chart-dataset-override="datasetOverride" chart-click="onClick"
+												width="900" height="450"
+												style="display: block;height: 450;width: 900px;"></canvas>
+										</md-content>
+									</div>
+								</div>
+								<div layout="row"
+									style="padding-left:3%; padding-right:3%; padding-top:1%; padding-bottom:1%">
+									<div style="padding-right:5%;">
+										<b>Display:</b>
+									</div>
+									<div>
+										<md-radio-group layout="row" layout-align="start center"
+											ng-model="check_whatToDisplay" style="padding-left: 30px"
+											ng-click="submit_GraphDisplay(check_whatToDisplay)"
+											ng-init="check_whatToDisplay='prediab'">
+											<md-radio-button value="prediab">Show risk graph for prediabetes
+											</md-radio-button>
+											<md-radio-button value="diab">Show risk graph for undiagnosed Type 2
+												Diabetes</md-radio-button>
+										</md-radio-group>
+									</div>
+								</div>
+							</div>
+						</div>
+						<md-divider></md-divider>
+						<div>
+							<md-button class="md-raised md-primary" ng-click="previous();">Back</md-button>
+						</div>
+					</md-tab-body>
+				</md-tab>
+			</md-tabs>
+		</md-content>
+	</div>
+
+	<!-- Angular Material requires Angular.js Libraries -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+	<!-- Angular Material Library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+	<script src="://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+	<script src="node_modules/chart.js/Chart.min.js"></script>
+	<script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+	<script src="../js/angular-chart.js"></script>
+	<script src="../js/angular-chart.min.js"></script>
+	<script src="../js/javascript_en.js"></script>
+
+</body>
+
+<section class="mbr-cards mbr-section mbr-section-nopadding" id="features3-1c"
+	style="background-color: rgb(255, 255, 255);">
+
+	<div class="mbr-cards-row row">
+		<div class="mbr-cards-col col-xs-12 col-lg-2" style="padding-top: 20px; padding-bottom: 20px;">
+			<div class="container">
+				<div class="card cart-block">
+					<div class="card-img" align="center">
+						<img src="../images/logo2.jpg" class="card-img-top">
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<footer class="mbr-small-footer mbr-section mbr-section-nopadding" id="footer1-1a"
+	style="background-color: rgb(0, 106, 142); padding-top: 1rem; padding-bottom: 1rem;">
+
+	<div class="container">
+        <p style = "text-align: center; color:#DCDCDC; font-size:12px; padding-left:1%; padding-right:1%;">Projekt delno financira Evropska unija, in sicer iz Evropskega socialnega sklada. 
+			Projekt se izvaja v okviru Operativnega programa za izvajanje Evropske kohezijske politike v obdobju 2014 - 2020, 
+			v okviru prednostne osi: »10. Znanje, spretnosti in vseživljenjsko učenje za boljšo zaposljivost«, prednostne naložbe: »10.1.
+			Krepitev enake dostopnosti vseživljenjskega učenja za vse starostne skupine v formalnem, neformalnem in priložnostnem okolju, izpolnjevanje znanj, 
+			spretnosti in kompetenc delovne sile ter spodbujanje prožnih oblik učenja, vključno prek poklicnega usmerjanja in validiranja pridobljenih kompetenc«, 
+			specifičnega cilja: »3. Spodbujanje prožnih oblik učenja ter podpora kakovostni karierni orientaciji za šolajočo se mladino na vseh ravneh
+			izobraževalnega sistema«, v okviru potrjene operacije: »Projektno delo z gospodarstvom in negospodarstvom v lokalnem in regionalnem okolju – 
+			Po kreativni poti do znanja 2016/2017«.</p>
+	</div>
+</footer>
+<style>
+	table,
+	td,
+	th {
+		border: 1px solid #ddd;
+		text-align: left;
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 50%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	th,
+	td {
+		padding: 15px;
+	}
+
+	body {
+		background-color: lightsteelblue;
+		padding: 10px;
+	}
+
+	.white {
+		background-color: white;
+	}
+
+	#chartBkgnd,
+	.chart {
+		background-color: white;
+	}
+
+	md-tabs.md-default-theme md-ink-bar,
+	md-tabs md-ink-bar {
+		color: rgb(0, 106, 142);
+		background-color: rgb(0, 106, 142);
+	}
+
+	.tabsdemoStaticTabs md-content md-tabs {
+		border: 1px solid #e1e1e1;
+	}
+
+	.tabsdemoStaticTabs md-content md-tabs md-tab-content {
+		padding: 25px;
+	}
+
+	.tabsdemoStaticTabs md-content md-tabs md-tab-content:nth-child(1) {
+		background-color: #cfd8dc;
+	}
+
+	.tabsdemoStaticTabs md-content md-tabs md-tab-content:nth-child(2) {
+		background-color: #ffb74d;
+	}
+
+	.tabsdemoStaticTabs md-content md-tabs md-tab-content:nth-child(3) {
+		background-color: #ffd54f;
+	}
+
+	.tabsdemoStaticTabs md-content md-tabs md-tab-content:nth-child(4) {
+		background-color: #aed581;
+	}
+
+	.tabsdemoStaticTabs md-content md-tabs md-tab-content:nth-child(5) {
+		background-color: #00897b;
+	}
+
+	.tabsdemoStaticTabs .after-tabs-area>span {
+		margin-top: 25px;
+		padding-right: 15px;
+		vertical-align: middle;
+		line-height: 30px;
+		height: 35px;
+	}
+
+	.tabsdemoStaticTabs .after-tabs-area>md-checkbox {
+		margin-top: 26px;
+		margin-left: 0;
+	}
+
+
+	md-tabs>md-tabs-wrapper {
+		background-color: rgb(0, 106, 142) !important;
+	}
+
+	md-tabs>md-tabs-wrapper>md-tabs-canvas>md-pagination-wrapper>md-tab-item:not([disabled]) {
+		color: #fff !important;
+	}
+
+	md-tabs .md-tab[disabled],
+	md-tabs .md-tab[disabled] md-icon {
+		color: #000 !important;
+	}
+</style>
+</html>
+
+<!--
+Copyright 2016 Google Inc. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be in foundin the LICENSE file at https://material.angularjs.org/license.
+-->
